@@ -55,7 +55,7 @@ class FTPThread(Thread):
 logger = logging.getLogger('power_logger')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler('power.log')
+#fh = logging.FileHandler('power.log')
 
 
 # Create a TimedRotatingFileHandler
@@ -65,7 +65,7 @@ fh = logging.FileHandler('power.log')
 # 'backupCount'=7 keeps the last 7 rotated log files.
 th = logging.handlers.TimedRotatingFileHandler(
     filename='power.log',
-    when='midnight',
+    when='m',
     interval=1,
     backupCount=7
 )
@@ -75,10 +75,10 @@ formatter = logging.Formatter(
     fmt="%(asctime)s - %(levelname)s - %(name)s - %(lineno)d - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
-fh.setFormatter(formatter)
+#fh.setFormatter(formatter)
 th.setFormatter(formatter)
 # Add the handler to the logger
-logger.addHandler(fh)
+#logger.addHandler(fh)
 logger.addHandler(th)
 
 ################# main() ##########################################
@@ -88,11 +88,7 @@ if __name__ == "__main__":
     FTP_PORT = 2121  # Use a non-privileged port for testing
     FTP_USER = 'doug'
     FTP_PASS = 'qwert!!'
-    #FTP_DIR = os.path.join(os.getcwd(), 'ftp_root') # Create an 'ftp_root' directory in current working directory
     FTP_DIR = os.getcwd()
-    # Create the directory if it doesn't exist
-    #os.makedirs(FTP_DIR, exist_ok=True)
-
     # Create and start the FTP server in a separate thread
     ftp_server_thread = FTPThread(FTP_HOST, FTP_PORT, FTP_USER, FTP_PASS, FTP_DIR)
     ftp_server_thread.start()
