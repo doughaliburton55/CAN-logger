@@ -57,6 +57,7 @@ logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
 fh = logging.FileHandler('power.log')
 
+
 # Create a TimedRotatingFileHandler
 # This handler will rotate the log file every day at midnight.
 # 'when'='midnight' specifies the rotation time.
