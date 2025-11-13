@@ -7,15 +7,31 @@ from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 import can
-# import ntplib # pooisbly not needed as RPi will get time from ntp on boot
+from luma.core.interface.serial import i2c
+from luma.core.render import canvas
+from luma.oled.device import ssd1306
+serial = i2c(port=1, address=0x3C)
+device = ssd1306(serial)
+
 
 ###############################################
 
 
 
 def my_app():
-        pass
-        #print("I got here!")
+    header = "RV STATUS"
+    bt_str = f'BLACK TANK   20%'
+    gt_str = f'GRAY  TANK   40%'
+    ft_str = f'FRESH TANK   80%'
+    volt_str = f'BATT 12.5   5.6 AMPS'
+    with canvas(device) as draw:
+        draw.rectangle((0,0,127,15), outline="white", fill="black")
+        draw.rectangle((0,16,127,63), outline="white", fill="black")
+        draw.text((30, 2), header, fill="white")
+        draw.text((2,17), bt_str, fill="white")
+        draw.text((2,27), gt_str, fill="white")
+        draw.text((2,37), ft_str, fill="white")
+        draw.text((2,47), volt_str, fill='white')
 
 class FTPThread(Thread):
     def __init__(self, host, port, username, password, directory):
@@ -83,7 +99,7 @@ logger.addHandler(th)
 ################# main() ##########################################
 if __name__ == "__main__":
     # Configuration for the FTP server
-    FTP_HOST = '10.42.0.2'
+    FTP_HOST = '192.168.1.157'
     FTP_PORT = 2121  # Use a non-privileged port for testing
     FTP_USER = 'doug'
     FTP_PASS = 'qwert!!'
